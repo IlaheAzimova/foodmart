@@ -17,7 +17,7 @@ function Index() {
     }
     return (
         <>
-            <section>
+            <section className='pt-60'>
                 <div className="container w-[90%] mx-auto">
                     <div className="flex flex-col gap-10">
                         <div className="lg:flex gap-10 ">

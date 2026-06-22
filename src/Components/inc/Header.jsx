@@ -20,8 +20,18 @@ function Header() {
     cart.forEach(item => {
         total += item.price
     })
+    const { product } = useContext(DATA)
+    const [search, setSearch] = useState('')
+    const filtered = search && search && product !== 0 ?
+        product.filter(item =>
+            item.name.toLowerCase().includes(search.toLowerCase())
+
+        ) : []
+
+
+
     return (
-        <header>
+        <header className='fixed w-full z-50 bg-[white]'>
             <div className="container w-[90%] mx-auto">
                 <div className="flex flex-col justify-center py-5">
                     <div className="md:flex items-center justify-between">
@@ -37,13 +47,47 @@ function Header() {
                                 <option value="">Drinks</option>
                                 <option value="">Chocolates</option>
                             </select>
-                            <input type="search" placeholder='Search for more than 20' className=' bg-[#eee] text-[14px] p-3' />
+                            <input value={search} onChange={(e) => setSearch(e.target.value)} type="search" placeholder='Search for more than 20' className=' outline-0 bg-[#eee] text-[14px] p-3' />
                             <button className='rounded-r-xl bg-[#eee] text-[16px] p-3.5 text-[#777]'><FaMagnifyingGlass /> </button>
 
+                            {search && (
+                                <div className="absolute top-25  w-[430px] mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+
+                                    {filtered.length > 0 ? (
+                                        filtered.map((item) => (
+                                            <div
+                                                key={item.id}
+                                                className="flex items-center gap-4 p-4 hover:bg-gray-50 duration-200 cursor-pointer border-b border-gray-100 last:border-b-0"
+                                            >
+                                                <img
+                                                    src={item.image}
+                                                    alt={item.name}
+                                                    className="w-14 h-14 object-cover rounded-xl bg-gray-100 shrink-0"
+                                                />
+
+                                                <div className="flex-1">
+                                                    <h3 className="font-semibold text-gray-800 text-sm">
+                                                        {item.name}
+                                                    </h3>
+
+                                                    <p className="text-yellow-500 font-bold">
+                                                        ${item.price}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="p-6 text-center text-gray-400 text-sm">
+                                            Product not found
+                                        </div>
+                                    )}
+
+                                </div>
+                            )}
                         </div>
                         <div className="hidden xl:flex flex-col">
                             <span className='text-[#777]'>For support?</span>
-                            <span className='text-[#222] text-right font-[600] text-[20px]'>+980- <br />34984089</span>
+                            <span className='text-[#222] text-right font-[600] text-[20px]'>+980 34984089</span>
 
 
                         </div>
