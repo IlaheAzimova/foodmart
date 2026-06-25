@@ -9,8 +9,14 @@ import { DATA } from './Components/context/DataContext';
 
 
 function Index() {
-    const { product, cart, setCart } = useContext(DATA)
+    const { product, cart, setCart, category } = useContext(DATA)
     const [count, setCount] = useState(1)
+    const [selectedCategory, setSelectedCategory] = useState("All");
+
+    const filteredProducts =
+        selectedCategory === "All"
+            ? product
+            : product.filter(item => item.category === selectedCategory);
 
     function addToCart(item) {
         setCart([...cart, item]);
@@ -98,22 +104,26 @@ function Index() {
 
                         </div>
 
-                        <div className="flex items-center uppercase gap-5 ">
-                            <span>All
-                                <hr className='border-0 bg-[#FFC43F] h-0.5' />
-                            </span>
-                            <span>Fruits & Veges
-
-                            </span>
-                            <span>Juices
-
-                            </span>
-                        </div>
 
                     </div>
                     <hr className='border-0 bg-[#eee] h-[0.2px] my-5' />
+                    <div className=" grid grid-cols-2 text-center md:flex items-center justify-center gap-3">
+                        {category.map((item, i) => (
+                            <div
+                                key={i}
+                                onClick={() => setSelectedCategory(item.name)}
+                                className={`card px-4 py-1 rounded-md text-[16px] cursor-pointer ${selectedCategory === item.name
+                                    ? "bg-[#FFC43F] text-white"
+                                    : "bg-[#eee]"
+                                    }`}
+                            >
+                                {item.name}
+                            </div>
+                        ))}
+
+                    </div>
                     <div className="cards my-10 flex flex-col gap-10 md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                        {product.map((item, i) => {
+                        {filteredProducts.map((item, i) => {
                             return <div key={i} className="card bg-white shadow-lg p-4 rounded-lg">
                                 <div className="img bg-[#eee] rounded-lg relative ">
                                     <img src={item.image} alt="" className='mx-auto h-[20vh]  ' />
